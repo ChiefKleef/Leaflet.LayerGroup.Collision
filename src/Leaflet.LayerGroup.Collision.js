@@ -56,8 +56,11 @@ function extensions(parentClass) { return {
 	onAdd: function (map) {
 		this._map = map;
 
-		for (var i in this._staticLayers) {
-			map.addLayer(this._staticLayers[i]);
+    for (var i in this._staticLayers) {
+      try {
+        map.addLayer(this._staticLayers[i]);
+      } catch (e) {
+      }
 		}
 
 		this._onZoomEnd();
@@ -66,7 +69,10 @@ function extensions(parentClass) { return {
 
 	onRemove: function(map) {
 		for (var i in this._staticLayers) {
-			map.removeLayer(this._staticLayers[i]);
+			try {
+        map.removeLayer(this._staticLayers[i]);
+      } catch (e) {
+      }
 		}
 		map.off('zoomend', this._onZoomEnd, this);
 		parentClass.prototype.onRemove.call(this, map);
